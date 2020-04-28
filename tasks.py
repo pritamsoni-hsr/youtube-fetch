@@ -51,7 +51,7 @@ def fetch_data(query='cricket', pageToken=None, **kwargs):
     params = yt_params(
         q=query, part='', maxResults=20, pageToken=pageToken,
     )
-    url = f'https://www.googleapis.com/youtube/v3/search?key={API_KEY}&order=date&type=video'  # noqa
+    url = f'https://www.googleapis.com/youtube/v3/search?key={API_KEY}&order=date&type=video&publishedAfter=2018-01-01'  # noqa
 
     response = client.get(url, params=params)
 
