@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Videos DashBoard</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2 id="heading">Video DashBoard</h2>
+        <div id="results"> </div>
+        <p>
+            <button onclick="currentPage--; getData()" id="prev">Prev...</button>
+            <button onclick="currentPage++; getData()" id="next">Next...</button>
+        </p>
+    </div>
+</body>
+<script type="text/javascript" src="/static/jquery-3.5.0.min.js"></script>
+<script type="text/javascript">
+    const RESULTS = $('#results');
+    const onRSucess = (r) => {
+        if (typeof(r.results) === 'object') RESULTS.html(render(r.results))
+    }
+    const onRError = (e) =>{
+        console.log(e)
+    }
+    let currentPage = 1;
+    if (currentPage === 1){ $('#prev').attr('disabled', true)}
+    const getData = ()=>{
+        $.ajax({url:`/all/?page=${currentPage}`, success:onRSucess, error:onRError})
+    }
+    getData();
+    const render = (data) => {
+        rhtml = ""
+        block = ""
+        inOneRow = window.innerWidth > 554 ? 3 : 2;
+        data.forEach((item, idx) => {
+            if (idx % (inOneRow+1) !== inOneRow){
+                block += `<li>
+                <img src="${item.thumbnails.default.url}">
+                <p class="card-title"> ${item.title} </p>
+                </li>`
+            }
+            else{
+                rhtml = `${rhtml}<ul>${block}</ul>`
+                block = "";
+            }
+            console.log(idx)
+        })
+        return rhtml;
+    }
+</script>
+</html>
